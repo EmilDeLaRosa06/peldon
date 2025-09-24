@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Me perdonas?</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f0;
+    text-align: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  h1 {
+    color: #ff66b3;
+    font-size: 3em;
+    margin-top: 50px;
+  }
+  .message {
+    font-size: 1.5em;
+    color: green;
+    margin-top: 20px;
+    min-height: 2em;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    transition: all 0.2s ease;
+  }
+  #yesBtn {
+    background-color: #ff66b3;
+    color: white;
+    left: 40%;
+    top: 60%;
+  }
+  #noBtn {
+    background-color: #ff99cc;
+    color: white;
+    left: 60%;
+    top: 60%;
+  }
+</style>
+</head>
+<body>
+<h1>¿Me perdonas?</h1>
+<button id="yesBtn">Sí</button>
+<button id="noBtn">No</button>
+<div class="message" id="feedback"></div>
+
+<script>
+window.onload = function() {
+  var noBtn = document.getElementById('noBtn');
+  var yesBtn = document.getElementById('yesBtn');
+  var feedback = document.getElementById('feedback');
+
+  var noClicks = 0;
+  var yesSize = 1;
+
+  // Generar color aleatorio
+  function randomColor() {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  // Mover botón "No" después del tercer click
+  function moveNoBtn() {
+    var maxX = window.innerWidth - noBtn.offsetWidth;
+    var maxY = window.innerHeight - noBtn.offsetHeight;
+    var randomX = Math.floor(Math.random() * maxX);
+    var randomY = Math.floor(Math.random() * maxY);
+    noBtn.style.left = randomX + 'px';
+    noBtn.style.top = randomY + 'px';
+
+    // Rebote visual
+    noBtn.style.transform = 'scale(1.2)';
+    setTimeout(function() {
+      noBtn.style.transform = 'scale(1)';
+    }, 200);
+
+    // Cambiar color
+    noBtn.style.backgroundColor = randomColor();
+  }
+
+  // Click en "No"
+  noBtn.onclick = function() {
+    noClicks++;
+    if(noClicks === 1) feedback.textContent = "Por favor 🥺";
+    else if(noClicks === 2) feedback.textContent = "Piénsalo un poco 😔";
+    else if(noClicks === 3) feedback.textContent = "No me das opción 🤗";
+    else moveNoBtn(); // Solo se mueve después del tercer click
+  };
+
+  // Mover "No" al pasar el mouse solo después del tercer click
+  noBtn.onmouseenter = function() {
+    if(noClicks >= 3) moveNoBtn();
+  };
+
+  // Click en "Sí"
+  yesBtn.onclick = function() {
+    yesSize += 0.2;
+    yesBtn.style.transform = 'scale(' + yesSize + ')';
+    feedback.textContent = "¡Sabías que me ibas a perdonar! 💖";
+    noBtn.style.display = 'none';
+  };
+};
+</script>
+</body>
+</html>
